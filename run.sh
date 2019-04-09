@@ -14,4 +14,4 @@ done
 export DBUS_SESSION_BUS_ADDRESS
 DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS "$fl" | cut -d= -f2-)
 
-python3 python_scripts/bing_image_loader.py
+python3 ~/BingImagify/image_loader.py
