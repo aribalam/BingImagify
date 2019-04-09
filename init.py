@@ -3,7 +3,7 @@ import getpass
 from crontab import CronTab
 
 INSTALL_DIR = os.getcwd()
-COMMENT = 'BingWallpapers'
+COMMENT = 'BingImagify'
 
 cron = CronTab(user=getpass.getuser())
 
