@@ -1,6 +1,6 @@
 import os
 import getpass
-from crontab import CronTab
+from CronTab import crontab
 
 INSTALL_DIR = os.getcwd()
 COMMENT = 'BingImagify'
