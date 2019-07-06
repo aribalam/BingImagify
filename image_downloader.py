@@ -57,3 +57,17 @@ if os.path.exists(shelve_file_path):
         info_file['image_index'] = image_index + 1
         
     info_file.close()
+
+else:
+
+    if not os.path.exists(image_dest_dir):
+        os.makedirs(image_dest_dir)
+
+    if not os.path.exists(shelve_dir_path):
+        os.makedirs(shelve_dir_path)
+
+    info_file = shelve.open(shelve_file_path);
+    info_file['previous_url'] = ''
+    info_file['image_index'] = 0
+    info_file['curr_image'] = 'null'
+    info_file.close()
