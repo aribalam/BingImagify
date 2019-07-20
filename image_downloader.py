@@ -1,5 +1,6 @@
 import os
 import shelve
+import pickle
 import urllib.request as urlutil
 import json
 from urllib.error import URLError
@@ -33,16 +34,32 @@ def get_image_url(url):
     return image_full_address
 
 
+def getInfo():
+    # getting the filename of the current wallpaper
+    info_file = open(shelve_file_path, 'rb')
+    info = pickle.load(info_file)
+    info_file.close()
+    return info
+
+
+def writeInfo(info):
+    info_file = open(shelve_file_path, 'wb')
+    pickle.dump(info, info_file)
+    info_file.close()
+
+
 # Continue only when the info file exist
 if os.path.exists(shelve_file_path):
 
     # Opens the shelve file and get the previously downloaded image url
-    info_file = shelve.open(shelve_file_path)
-    previous_url = info_file['previous_url']
+    
+    info = getInfo()
+    previous_url = info['previous_url']
     # image_index gives the index to be given to the image
-    image_index = info_file['image_index']
+    image_index = info['image_index']
 
     image_url = get_image_url(url_feed)
+
 
     # proceed only when the image url found is not the same as the previous one
     # to avoid downloading of duplicate images
@@ -53,21 +70,22 @@ if os.path.exists(shelve_file_path):
         urlutil.urlretrieve(image_url, image_full_address)
 
         # update the parameters in the info file
-        info_file['previous_url'] = image_url
-        info_file['image_index'] = image_index + 1
-        
-    info_file.close()
+        info['previous_url'] = image_url
+        info['image_index'] = image_index + 1
+    
 
-else:
+    writeInfo(info)
 
-    if not os.path.exists(image_dest_dir):
-        os.makedirs(image_dest_dir)
+# else:
 
-    if not os.path.exists(shelve_dir_path):
-        os.makedirs(shelve_dir_path)
+#     if not os.path.exists(image_dest_dir):
+#         os.makedirs(image_dest_dir)
 
-    info_file = shelve.open(shelve_file_path);
-    info_file['previous_url'] = ''
-    info_file['image_index'] = 0
-    info_file['curr_image'] = 'null'
-    info_file.close()
+#     if not os.path.exists(shelve_dir_path):
+#         os.makedirs(shelve_dir_path)
+
+#     info_file = shelve.open(shelve_file_path);
+#     info_file['previous_url'] = ''
+#     info_file['image_index'] = 0
+#     info_file['curr_image'] = 'null'
+#     info_file.close()
